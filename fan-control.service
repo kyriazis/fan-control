@@ -6,6 +6,7 @@ After=network.target
 ExecStart=/root/bin/fan-control.pl
 Restart=always
 User=root
+StandardOutput=null
 
 [Install]
 WantedBy=multi-user.target
