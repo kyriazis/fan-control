@@ -17,6 +17,9 @@ and setting fans is too much overhead.  In addition, the ipmitool command does n
 a direct path to the IPMI device, just an IPMI "number" (ie. device 0, device 1, etc.).  All handles to /dev and /sys
 files are kept open so there is no additional overhead for opening and closing files at a 10 second interval.
 
+As an example, in one systemd run, I observed the following output during a restart of the service, which is not bad:
+Consumed 1.966s CPU time over 11h 17min 32.779s wall clock time, 4.1M memory peak
+
 The IPMI raw commands are specific to X11-series motherboards.  Modify as needed for your own use.
 The case I am using have separate compartments for drives, and numbered (CPU) fans are used in the motherboard compartment
 while the lettered fans are used for the drive compartment.
