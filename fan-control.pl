@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Fcntl;
 use Time::HiRes qw(time);
+use Sys::Syslog;
 
 #
 # ---------
@@ -91,6 +92,7 @@ sub set_target {
     $self->{setpoint} = $new_target;
 }
 
+# end PIDController class
 1;
 
 #
@@ -279,6 +281,9 @@ sub main {
 	cpu_temps_init();
 	ipmi_init();
 
+	::openlog("fan-control", "pid,ndelay", "local1");
+	::syslog('info', 'Starting');
+
 	my $oldCpuTemp;
 	my $oldCpuPwm;
 	my $oldDriveTemp;
@@ -307,10 +312,14 @@ sub main {
 		# only print out is something changes
 		if(($oldCpuTemp != $cpuTemp) || ($oldCpuPwm != $cpuFanPwm) || 
 			($oldDriveTemp != $driveTemp) || ($oldDrivePwm != $driveFanPwm)) {
-			print localtime() . 
-				"  Cpu Temp: " . $cpuTemp . "  pwm: " . $cpuFanPwm . 
+			print localtime() .
+				"  Cpu Temp: " . $cpuTemp . "  pwm: " . $cpuFanPwm .
 				"  Drive Temp: " . $driveTemp . "  pwm: " . $driveFanPwm .
 				"\n";
+			::syslog ( 'info', "%s",
+				"Cpu Temp: " . $cpuTemp . "  pwm: " . $cpuFanPwm .
+				"  Drive Temp: " . $driveTemp . "  pwm: " . $driveFanPwm
+				);
 		}
 
 		# update old values
