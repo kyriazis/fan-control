@@ -269,7 +269,7 @@ sub main {
 	);
 	my $drivePid = PIDController->new (
 		kp => 20.0,
-		ki => 0.0,
+		ki => 0.01,
 		kd => 0.0,
 		setpoint => 50.0,
 		out_min => 30,
